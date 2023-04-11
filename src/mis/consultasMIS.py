@@ -42,3 +42,38 @@ def getDispositivosVulnerables(ndispositivos):
     #CERRAR CONEXION
     conn.close()
     return ids, value_id
+
+def getDispositivosPeligrosos(peligrosos,top):
+    #CONEXION BASE DATOS
+    conn = sqlite3.connect("../../database.db")
+    cursorObj = conn.cursor()
+    dataframe = loadDataframe("SELECT devices.id, analisis.servicios_inseguros, analisis.servicios FROM devices INNER JOIN analisis ON devices.id=analisis.id_device",conn)
+    values = dict()
+    for i in range(0,len(dataframe)):
+        values[dataframe['id'][i]] = dataframe['servicios_inseguros'][i]/dataframe['servicios'][i]
+    values_sorted = sorted(values.items(), key= lambda x:x[1], reverse=True)
+    ids = []
+    value_id = []
+    print(values_sorted)
+    print(peligrosos)
+    if top>len(values_sorted): top = len(values_sorted) 
+    count = 0
+    i=0
+    if(peligrosos):
+        while count<top and i<len(values_sorted):
+            if values_sorted[i][1] >= 0.33:
+                ids.append(values_sorted[i][0])
+                value_id.append(values_sorted[i][1])
+                count+=1
+            i+=1
+            
+    else:
+        while count<top and i<len(values_sorted):
+            if values_sorted[i][1] < 0.33:
+                ids.append(values_sorted[i][0])
+                value_id.append(values_sorted[i][1])
+                count+=1
+            i+=1
+    #CERRAR CONEXION
+    conn.close()
+    return ids, value_id

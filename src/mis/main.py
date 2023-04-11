@@ -27,10 +27,23 @@ def ips():
     return render_template('home.html',graphJSON=graphJSON)
 
 
-@app.route("/dispositivos")
+@app.route("/vulnerables")
 def dispositivos():
     ndispositivos = request.args.get("dispositivos",default=10,type=int)
     ids, values = getDispositivosVulnerables(ndispositivos)
+    fig = go.Figure(data=[go.Table(header=dict(values=['ID',"TOTAL"]),cells= dict(values=[ids,values]))]
+                    ,layout_title_text='ALERTS BY DEVICE',layout=go.Layout(height=800))
+    import plotly
+    a = plotly.utils.PlotlyJSONEncoder
+    graphJSON = json.dumps(fig, cls=a)
+    return render_template('home.html',graphJSON=graphJSON)
+
+
+@app.route("/peligrosos")
+def peligrosos():
+    peligrosos = request.args.get("peligrosos",default=False,type= lambda v:v.lower()=='true')
+    top = request.args.get("top",default=5,type=int)
+    ids, values = getDispositivosPeligrosos(peligrosos,top)
     fig = go.Figure(data=[go.Table(header=dict(values=['ID',"TOTAL"]),cells= dict(values=[ids,values]))]
                     ,layout_title_text='ALERTS BY DEVICE',layout=go.Layout(height=800))
     import plotly
