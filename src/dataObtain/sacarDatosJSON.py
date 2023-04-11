@@ -38,7 +38,7 @@ def sql_insert(con, cursorObj, data):
 
 
 
-con = sqlite3.connect("../database.db")
+con = sqlite3.connect("../../database.db")
 #con = sqlite3.connect("databaseJS.db") # por si queremos guardarlo en otra base de datos por lo que fuera
 cursorObj = con.cursor()
 sql_create_devices(con, cursorObj)
@@ -47,7 +47,7 @@ sql_alter_tables(con, cursorObj)
 
 
 #LEER ARCHIVO JSON
-with open("../devices.json") as file:
+with open("../../devices.json") as file:
     dispositivos = json.load(file)
 
 # iterar sobre los objetos JSON y llamar a la función sql_insert para insertar los datos en la base de datos

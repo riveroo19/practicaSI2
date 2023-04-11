@@ -21,14 +21,14 @@ def sql_commit(con):
     con.commit()
 
 #CONEXION BASE DATOS
-con = sqlite3.connect("../database.db")
+con = sqlite3.connect("../../database.db")
 cursorObj = con.cursor()
 sql_create_alertas(con,cursorObj)
 
 
 #LEER ARCHIVO CSV
 i=0
-with open('../alerts.csv', newline='') as File:  
+with open('../../alerts.csv', newline='') as File:  
     reader = csv.reader(File)
     for row in reader:
         if i!=0:
