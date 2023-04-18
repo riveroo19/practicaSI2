@@ -54,8 +54,6 @@ def getDispositivosPeligrosos(peligrosos,top):
     values_sorted = sorted(values.items(), key= lambda x:x[1], reverse=True)
     ids = []
     value_id = []
-    print(values_sorted)
-    print(peligrosos)
     if top>len(values_sorted): top = len(values_sorted) 
     count = 0
     i=0

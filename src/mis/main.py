@@ -49,7 +49,7 @@ def peligrosos():
     import plotly
     a = plotly.utils.PlotlyJSONEncoder
     graphJSON = json.dumps(fig, cls=a)
-    return render_template('home.html',graphJSON=graphJSON)
+    return render_template('peligrosos.html',graphJSON=graphJSON)
 
 
 if __name__ == '__main__':
