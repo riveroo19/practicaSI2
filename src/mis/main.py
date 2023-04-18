@@ -51,6 +51,15 @@ def peligrosos():
     graphJSON = json.dumps(fig, cls=a)
     return render_template('peligrosos.html',graphJSON=graphJSON)
 
+@app.route("/cve")
+def cve():
+    ids, modificada, resumen = getLastCVE()
+    fig = go.Figure(data=[go.Table(header=dict(values=['ID',"MODIFICACION","RESUMEN"]),cells= dict(values=[ids,modificada, resumen]))]
+                    ,layout_title_text='LAST 10 CVEs DETECTED',layout=go.Layout(height=1500))
+    import plotly
+    a = plotly.utils.PlotlyJSONEncoder
+    graphJSON = json.dumps(fig, cls=a)
+    return render_template('home.html',graphJSON=graphJSON)
 
 if __name__ == '__main__':
     app.run(debug = True)

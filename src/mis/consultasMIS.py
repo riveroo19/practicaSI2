@@ -1,6 +1,8 @@
 import pandas as pd
 import sqlite3
 import math
+import requests
+import json
 
 def loadDataframe(query,conn):
     dataframe = pd.read_sql(query,conn)
@@ -75,3 +77,20 @@ def getDispositivosPeligrosos(peligrosos,top):
     #CERRAR CONEXION
     conn.close()
     return ids, value_id
+
+
+def getLastCVE(n=10):
+    url = "https://cve.circl.lu/api/last"
+    response = requests.get(url).json()
+    ids = []
+    modificiones = []
+    resumenes = []
+    for element in response:
+        idCVE = element['id']
+        ids.append(idCVE)
+        modificada = element['last-modified']
+        modificiones.append(modificada)
+        sumary = element['summary']
+        resumenes.append(sumary)
+        references = element['references']
+    return ids[:n], modificiones[:n], resumenes[:n]
