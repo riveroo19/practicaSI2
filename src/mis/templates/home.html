@@ -1,4 +1,15 @@
-<title>MIS PAGE</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>INFO</title>
+</head>
+<body>
+    <br><br><br>
+    <div style="text-align:center;">
+        <p>Go <a href="/">home</a></p>
+    </div>
+    <br><br>
 {% if graphJSON %}
     <div id="chart" class="chart"></div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -6,4 +17,7 @@
         var graphs = {{graphJSON | safe}};
         Plotly.plot('chart',graphs,{});
     </script>
-{% endif %}
+{% endif %} 
+
+</body>
+</html>

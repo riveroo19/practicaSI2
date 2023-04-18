@@ -8,9 +8,9 @@ app =  Flask(__name__)
 
 @app.route("/")
 def home():
-    return '<p>Home Page</p>'
+    return render_template('index.html')
 
-@app.route("/ips")
+@app.route("/ips", methods=["GET", "POST"])
 def ips():
     nips = request.args.get("ips",default=10,type=int)
     ips_sorted = getTopIps(nips)
@@ -20,36 +20,41 @@ def ips():
         ip_alerts_plot.append(ip[1])
         ip_name.append(ip[0])
     fig = go.Figure(data=[go.Bar(y=ip_alerts_plot,x=ip_name)],
-                    layout_title_text='TOP 10 IPS ALERTS',layout=go.Layout(height=800))
+                    layout_title_text=f'TOP {nips} IPS ALERTS',layout=go.Layout(height=800))
     import plotly
     a = plotly.utils.PlotlyJSONEncoder
     graphJSON = json.dumps(fig, cls=a)
     return render_template('home.html',graphJSON=graphJSON)
 
 
-@app.route("/vulnerables")
+@app.route("/vulnerables", methods=["GET", "POST"])
 def dispositivos():
     ndispositivos = request.args.get("dispositivos",default=10,type=int)
     ids, values = getDispositivosVulnerables(ndispositivos)
     fig = go.Figure(data=[go.Table(header=dict(values=['ID',"TOTAL"]),cells= dict(values=[ids,values]))]
-                    ,layout_title_text='ALERTS BY DEVICE',layout=go.Layout(height=800))
+                    ,layout_title_text='DEVICES',layout=go.Layout(height=800))
     import plotly
     a = plotly.utils.PlotlyJSONEncoder
     graphJSON = json.dumps(fig, cls=a)
     return render_template('home.html',graphJSON=graphJSON)
 
 
-@app.route("/peligrosos")
+@app.route("/peligrosos", methods=["GET", "POST"])
 def peligrosos():
-    peligrosos = request.args.get("peligrosos",default=False,type= lambda v:v.lower()=='true')
-    top = request.args.get("top",default=5,type=int)
-    ids, values = getDispositivosPeligrosos(peligrosos,top)
-    fig = go.Figure(data=[go.Table(header=dict(values=['ID',"TOTAL"]),cells= dict(values=[ids,values]))]
-                    ,layout_title_text='ALERTS BY DEVICE',layout=go.Layout(height=800))
+    peligrosos = request.args.get("peligrosos", default=False, type=lambda v: v.lower() == 'true')
+    if request.method == "POST":
+        top = request.form.get("top", default=5, type=int)
+        peligrosos = request.form.get("peligrosos", default=False, type=lambda v: v.lower() == 'true')
+    else:
+        top = 7
+    ids, values = getDispositivosPeligrosos(peligrosos, top)
+    fig = go.Figure(data=[go.Table(header=dict(values=['ID', "TOTAL"]), cells=dict(values=[ids, values]))],
+                    layout_title_text='ALERTS BY DEVICE', layout=go.Layout(height=800))
     import plotly
     a = plotly.utils.PlotlyJSONEncoder
     graphJSON = json.dumps(fig, cls=a)
-    return render_template('peligrosos.html',graphJSON=graphJSON)
+    return render_template('peligrosos.html', graphJSON=graphJSON, peligrosos=peligrosos)
+
 
 @app.route("/cve")
 def cve():

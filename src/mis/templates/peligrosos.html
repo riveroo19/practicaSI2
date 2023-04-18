@@ -1,7 +1,24 @@
-<title>MIS PAGE</title>
-<button>Peligrosos</button>
-<h2>HOLA</h2>
-{% if graphJSON %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MIS PAGE</title>
+</head>
+<body>
+    <div style="text-align:center;">
+        <button onclick="window.location.href='/peligrosos?peligrosos=true'">Más peligrosos</button>
+        <button onclick="window.location.href='/peligrosos?peligrosos=false'">Menos peligrosos</button>
+        <br><br>
+        <form action="/peligrosos" method="post">
+            <label>Indique un top: <input type="number" name="top"/></label>
+            <input type="hidden" name="peligrosos" value="{{ peligrosos }}"/>
+            <input type="submit" value="Enviar"/>
+        </form>
+    </div> <br><br>
+    <div style="text-align:center;">
+        <p>Go <a href="/">home</a></p>
+    </div>
+    {% if graphJSON %}
     <div id="chart" class="chart"></div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
@@ -9,3 +26,5 @@
         Plotly.plot('chart',graphs,{});
     </script>
 {% endif %}
+</body>
+</html>

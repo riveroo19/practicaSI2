@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+    <div style="text-align:center;">
+        <h3>TOP IPS PELIGROSAS</h3>
+        <form action="/ips">
+            <input name="ips" type="number"/>
+            <input type="submit" value="Enviar">
+        </form>
+        <br><br>
+        <h3>TOP DISPOSITIVOS VULNERABLES</h3>
+        <form action="/vulnerables">
+            <input name="dispositivos" type="number"/>
+            <input type="submit" value="Enviar">
+        </form>
+        <br><br>
+        <h3>TOP DISPOSITIVOS MÁS Y MENOS PELIGROSOS</h3>
+        <form action="/peligrosos" method="post">
+            <input name="top" type="number"/>
+            <input type="submit" value="Enviar">
+        </form>
+        <br><br>
+        <a href="/cve"><h3>TOP 10 VULNERABILIDADES A TIEMPO REAL</h3></a>
+    </div>
+
+</body>
+</html>

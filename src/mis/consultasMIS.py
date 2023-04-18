@@ -1,8 +1,8 @@
 import pandas as pd
 import sqlite3
-import math
 import requests
 import json
+import math
 
 def loadDataframe(query,conn):
     dataframe = pd.read_sql(query,conn)
@@ -52,7 +52,7 @@ def getDispositivosPeligrosos(peligrosos,top):
     dataframe = loadDataframe("SELECT devices.id, analisis.servicios_inseguros, analisis.servicios FROM devices INNER JOIN analisis ON devices.id=analisis.id_device",conn)
     values = dict()
     for i in range(0,len(dataframe)):
-        values[dataframe['id'][i]] = dataframe['servicios_inseguros'][i]/dataframe['servicios'][i]
+        values[dataframe['id'][i]] = dataframe['servicios_inseguros'][i]/dataframe['servicios'][i] if dataframe['servicios'][i] != 0 else 0
     values_sorted = sorted(values.items(), key= lambda x:x[1], reverse=True)
     ids = []
     value_id = []
