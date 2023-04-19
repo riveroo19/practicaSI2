@@ -43,7 +43,7 @@ def dispositivos():
 def peligrosos():
     peligrosos = request.args.get("peligrosos", default=False, type=lambda v: v.lower() == 'true')
     if request.method == "POST":
-        top = request.form.get("top", default=5, type=int)
+        top = request.form.get("top", default=7, type=int)
         peligrosos = request.form.get("peligrosos", default=False, type=lambda v: v.lower() == 'true')
     else:
         top = 7
