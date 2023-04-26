@@ -66,6 +66,32 @@ def cve():
     graphJSON = json.dumps(fig, cls=a)
     return render_template('home.html',graphJSON=graphJSON)
 
+@app.route("/check", methods=["POST"])
+def checkUrl():
+
+    url = request.form['url']
+    apikey = request.form['apiKey']
+    print (url, apikey)
+
+    jsonObject = getURLScanned(url=url, apiKey=apikey)
+
+    urlplot = jsonObject['data']['attributes']['url']
+    lastUrlPlot = jsonObject['data']['attributes']['last_final_url']
+    statsUrlPlot = jsonObject['data']['attributes']['last_analysis_stats']
+    resultsUrlPlot = jsonObject['data']['attributes']['last_analysis_results']
+
+    
+    statsUrlPlot =  json.dumps(statsUrlPlot, indent=4)
+    resultsUrlPlot = json.dumps(resultsUrlPlot, indent=1)
+
+    fig = go.Figure(data=[go.Table(header=dict(values=["URL", "REDIRECCIÓN FINAL", "ÚLTIMOS STATS", "RESULTADOS"]),cells= dict(values=[urlplot, lastUrlPlot, statsUrlPlot, resultsUrlPlot]))]
+                    ,layout_title_text='Pequeño análisis de la url.',layout=go.Layout(height=1500))
+    import plotly
+    a = plotly.utils.PlotlyJSONEncoder
+    graphJSON = json.dumps(fig, cls=a)
+
+    return render_template('home.html',graphJSON=graphJSON)
+
 if __name__ == '__main__':
     app.run(debug = True)
 

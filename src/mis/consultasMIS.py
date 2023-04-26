@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3
 import requests
+import base64
 import json
 import math
 
@@ -94,3 +95,17 @@ def getLastCVE(n=10):
         resumenes.append(sumary)
         references = element['references']
     return ids[:n], modificiones[:n], resumenes[:n]
+
+def getURLScanned(url, apiKey):
+    header = {
+        'x-apikey': apiKey,
+    }        
+    url_id = base64.urlsafe_b64encode(url.encode()).decode().strip("=")
+
+    urlRequested2 = 'https://www.virustotal.com/api/v3/urls/'+ url_id
+
+    response = requests.get(urlRequested2, headers=header)
+    
+    if response.status_code == 200:
+        return response.json()
+    
