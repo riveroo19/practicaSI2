@@ -1,6 +1,11 @@
-import matplotlib.pyplot as plt
-from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import export_graphviz
+from sklearn.datasets import load_iris
+from subprocess import call
+import graphviz #https://graphviz.org/download/
 import json
+from sklearn import tree
+import matplotlib.pyplot as plt
 
 def checkPrediction(predict, data):
     aciertos= 0
@@ -20,7 +25,7 @@ f.close()
 data_x_train = []
 data_y_train = []
 data_x_predict = []
-data_y = []
+data_y =[]
 
 for user in data_train:
     coeficiente = user['servicios_inseguros']/user['servicios'] if user['servicios']!=0 else 0
@@ -32,15 +37,19 @@ for user in data_predict:
     data_x_predict.append([coeficiente])
     data_y.append(user['peligroso'])
 
-
-clf = tree.DecisionTreeClassifier()
-clf = clf.fit(data_x_train, data_y_train)
+#Split data
+iris = load_iris()
+X, y = iris.data, iris.target
+clf = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=10)
+clf.fit(data_x_train, data_y_train)
 
 data_y_predict = clf.predict(data_x_predict)
-aciertos,fallos = checkPrediction(data_y_predict,data_y)
+aciertos, fallos = checkPrediction(data_y_predict,data_y)
 print("ACIERTOS => " + str(aciertos))
 print("FALLOS => " + str(fallos))
 
-
-tree.plot_tree(clf,filled=True,feature_names=["coeficiente"],fontsize=7,class_names=["no peligroso","peligroso"])
-plt.show()
+for i in range(len(clf.estimators_)):
+    print(i)
+    estimator = clf.estimators_[i]
+    tree.plot_tree(estimator,filled=True,feature_names=["coeficiente"],fontsize=7,class_names=["no peligroso","peligroso"])
+    plt.show()
