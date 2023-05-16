@@ -2,7 +2,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import export_graphviz
 from sklearn.datasets import load_iris
 from subprocess import call
-import graphviz #https://graphviz.org/download/
 import json
 from sklearn import tree
 import matplotlib.pyplot as plt
@@ -37,9 +36,6 @@ for user in data_predict:
     data_x_predict.append([coeficiente])
     data_y.append(user['peligroso'])
 
-#Split data
-iris = load_iris()
-X, y = iris.data, iris.target
 clf = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=10)
 clf.fit(data_x_train, data_y_train)
 

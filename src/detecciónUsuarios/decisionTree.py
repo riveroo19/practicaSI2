@@ -32,7 +32,6 @@ for user in data_predict:
     data_x_predict.append([coeficiente])
     data_y.append(user['peligroso'])
 
-
 clf = tree.DecisionTreeClassifier()
 clf = clf.fit(data_x_train, data_y_train)
 
